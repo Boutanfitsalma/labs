@@ -1,0 +1,20 @@
+1,Grand Hotel Paris,Paris,5
+2,Hotel du Louvre,Paris,4
+3,Ibis Paris Opera,Paris,3
+4,Hotel Eiffel Tower,Paris,4
+5,Marriott Lyon,Lyon,5
+6,Novotel Lyon,Lyon,4
+7,Ibis Lyon Centre,Lyon,3
+8,Hotel Bellecour,Lyon,3
+9,InterContinental Marseille,Marseille,5
+10,Sofitel Marseille,Marseille,4
+11,Ibis Marseille Vieux Port,Marseille,3
+12,Hotel Richelieu,Marseille,2
+13,Hilton Nice,Nice,5
+14,Hotel Negresco,Nice,5
+15,Ibis Nice Centre,Nice,3
+16,Hotel La Perouse,Nice,4
+17,Radisson Toulouse,Toulouse,4
+18,Hotel des Beaux Arts,Toulouse,3
+19,Campanile Toulouse,Toulouse,2
+20,Hotel Albert 1er,Toulouse,3
