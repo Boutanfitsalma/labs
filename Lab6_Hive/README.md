@@ -232,5 +232,4 @@ Les captures d'écran dans le dossier `screenshots/` documentent :
 8. Résultats des requêtes
 
 
-
 ---
