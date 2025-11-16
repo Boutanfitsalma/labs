@@ -230,6 +230,7 @@ Les captures d'écran dans le dossier `screenshots/` documentent :
 6. Structure HDFS warehouse
 7. Tables partitionnées
 8. Résultats des requêtes
-9. Analyses statistiques
+
+
 
 ---
