@@ -1,112 +1,177 @@
-\# Lab 4 -- HBase & Spark
+# Lab 5 - Apache Pig
 
-\## Objectifs du TP
 
-1\. Charger un dataset dans HDFS 2. Créer et alimenter une table HBase
-3. Interroger et vérifier les données 4. Intégrer Spark pour analyser
-les données distribuées
+## 🗂️ Structure du projet
 
-\-\--
+```
+Lab5_Pig/
+├── pig_scripts/                  # Scripts Pig Latin
+│   ├── wordcount.pig             # Exemple WordCount (✅ Terminé)
+│   ├── employees.pig             # Analyse des employés (✅ Terminé)
+│   ├── flights.pig               # Analyse des vols (✅ Terminé)
+│   ├── films.pig                 # Analyse des films (✅ Terminé)
+│   └── convert_json_to_csv.py    # Script de conversion JSON→CSV
+├── data/                         # Données sources
+│   ├── alice.txt
+│   ├── employees.txt
+│   ├── departments.txt
+│   ├── films.json / films.csv
+│   ├── artists.json / artists.csv
+│   ├── film_actors.csv
+│   └── flights/
+│       └── sample_flights.csv
+├── screenshots/                  # Captures d'écran des résultats
+│   ├── 01_wordcount.png
+│   ├── 02_employees.png
+│   ├── 03_flights.png
+│   └── 04_films.png
+├── docs/
+│   └── lab5_APACHE_PIG.pdf       # Énoncé du TP
+└── README.md
+```
 
-\## 📂 Structure du projet
 
-\`\`\` Lab4_HBase/ │ ├── HelloHBase.java \# Code Java pour HBase
-(création + insertion + lecture) ├── purchases_2.txt \# Dataset (NON
-inclus GitHub car \>100MB) ├── Screenshots/ \# Captures d'écran de
-l'exécution └── hbase_spark/ ├── HbaseSparkProcess.java └──
-HbaseSparkAnalytics.java \`\`\`
+## 🔧 Installation Apache Pig
 
-\-\--
+Dans le conteneur `hadoop-master` :
 
-\## Partie 1 --- HBase
+```bash
+# Télécharger et installer Pig
+wget https://dlcdn.apache.org/pig/pig-0.17.0/pig-0.17.0.tar.gz
+tar -zxvf pig-0.17.0.tar.gz
+mv pig-0.17.0 /usr/local/pig
+rm pig-0.17.0.tar.gz
 
-\### Dataset utilisé
+# Configurer les variables d'environnement
+echo 'export PIG_HOME=/usr/local/pig' >> ~/.bashrc
+echo 'export PATH=$PATH:$PIG_HOME/bin' >> ~/.bashrc
+source ~/.bashrc
 
-\`\`\` purchases_2.txt \`\`\`
+# Démarrer Hadoop et les services
+./start-hadoop.sh
+yarn timelineserver &
+mapred --daemon start historyserver
+```
 
-⚠ \*\*Non ajouté à GitHub\*\* (taille : 232MB, limite GitHub = 100MB)
+## 📝 Scripts réalisés
 
-\-\--
+### 1. WordCount (`wordcount.pig`) ✅
 
-\## Étapes réalisées
+Compte les occurrences de chaque mot dans le texte d'Alice au Pays des Merveilles.
 
-\### ✔ 1. Import du dataset dans Docker
+**Exécution :**
+```bash
+# Mode local
+pig -x local
+grunt> exec /shared_volume/wordcount.pig
+```
 
-Le fichier \`purchases_2.txt\` a été copié dans le conteneur via un
-volume Docker.
+**Résultats :**
+- Fichier d'entrée : `alice.txt` (15 lignes)
+- Sortie : `/shared_volume/pig_out/WORD_COUNT/`
+- 119 mots uniques identifiés
+- **Screenshot** : `screenshots/01_wordcount.png`
 
-\### ✔ 2. Création de la table HBase
+---
 
-Commande exécutée dans le shell HBase :
+### 2. Analyse des employés (`employees.pig`) ✅
 
-\`\`\`hbase create \'products\', \'cf\' \`\`\`
+Analyse complète des données d'employés d'une entreprise.
 
-\### ✔ 3. Insertion et lecture via Java
+**Préparation des données :**
+```bash
+# Copier les données sur HDFS
+hdfs dfs -mkdir -p /input/employees
+hdfs dfs -put /shared_volume/employees.txt /input/employees/
+hdfs dfs -put /shared_volume/departments.txt /input/employees/
+```
 
-Le fichier \`HelloHBase.java\` effectue :
+**Exécution :**
+```bash
+pig /shared_volume/employees.pig
+```
 
-\* Connexion au cluster HBase \* Création de table (si inexistante) \*
-Insertion de plusieurs lignes d'exemple \* Lecture et affichage des
-données
+**Analyses effectuées :**
+1. ✅ Salaire moyen par département
+2. ✅ Nombre d'employés par département
+3. ✅ Liste des employés avec leurs départements
+4. ✅ Employés avec salaire > 60 000€
+5. ✅ Département avec le salaire moyen le plus élevé
+6. ✅ Départements sans employés
+7. ✅ Nombre total d'employés dans l'entreprise
+8. ✅ Employés de la ville de Paris
+9. ✅ Salaire total par ville
+10. ✅ Départements ayant des femmes employées (heuristique sur prénoms)
 
-Fichier : \`Lab4_HBase/HelloHBase.java\`
+**Résultats :**
+- 20 employés analysés
+- 6 départements
+- Sortie finale : `/pigout/employes_femmes/` (4 départements)
+- **Screenshot** : `screenshots/02_employees.png`
 
-\-\--
+---
 
-\## Partie 2 --- Spark + HBase
+### 3. Analyse des vols aériens (`flights.pig`) ✅
 
-\*\*Objectif :\*\* lire les données stockées dans la table HBase et
-effectuer des analyses distribuées.
+Traitement et analyse de données de vols commerciaux.
 
-\### Scripts inclus
+**Préparation :**
+```bash
+hdfs dfs -mkdir -p /input/flights
+hdfs dfs -put /shared_volume/sample_flights.csv /input/flights/
+```
 
-\#### HbaseSparkProcess.java
+**Analyses réalisées :**
+- Top 20 aéroports par volume total de vols (arrivées + départs)
+- Popularité des transporteurs (volume logarithmique par année)
+- Proportion de vols retardés (retard > 15 min) par année
+- Retards par transporteur et par année
+- Itinéraires les plus fréquentés
 
-Lit la table HBase \`products\` via Spark :
+**Résultats :**
+- Sortie : `/pigout/top_routes/`
+- **Screenshot** : `screenshots/03_flights.png`
 
-\* Configuration HBase \* Utilisation de \`TableInputFormat\` \*
-Comptage des lignes de la table
+---
 
-Fichier : \`Lab4_HBase/hbase_spark/HbaseSparkProcess.java\`
+### 4. Analyse des films (`films.pig`) ✅
 
-\-\--
+Traitement de données cinématographiques (films, réalisateurs, acteurs).
 
-\#### HbaseSparkAnalytics.java
+#### 📌 Note importante sur le traitement JSON
 
-Script Spark complet permettant :
+L'énoncé demandait de traiter directement les fichiers JSON avec `JsonLoader`. 
+Cependant, nous avons rencontré les limitations suivantes :
 
-\* Somme totale de toutes les ventes \* Total des ventes par produit \*
-Total des ventes par ville \* Statistiques globales :
+- ❌ `JsonLoader` ne supporte pas les noms de champs commençant par `_` (comme `_id`)
+- ❌ Le format JSON pretty-printed n'est pas compatible avec `JsonLoader` (qui attend du JSON Lines)
+- ❌ La bibliothèque Piggybank présentait des bugs de compatibilité
 
-\* min \* max \* moyenne
+**Solution adoptée** : Conversion JSON → CSV via script Python (`convert_json_to_csv.py`), puis traitement avec `PigStorage`.
 
-Fichier : \`Lab4_HBase/hbase_spark/HbaseSparkAnalytics.java\`
+Cette approche est courante en production Big Data lorsque les données sources ne sont pas dans le format optimal pour l'outil de traitement.
 
-\-\--
+**Préparation :**
+```bash
+# 1. Convertir JSON en CSV (sur Windows)
+python pig_scripts/convert_json_to_csv.py
 
-\## Résultats obtenus
+# 2. Copier vers HDFS
+hdfs dfs -mkdir -p /input/films
+hdfs dfs -put /shared_volume/films.csv /input/films/
+hdfs dfs -put /shared_volume/artists.csv /input/films/
+hdfs dfs -put /shared_volume/film_actors.csv /input/films/
+```
 
-\### Avec HBase :
+**Analyses effectuées :**
+1. Films américains groupés par année
+2. Films américains groupés par réalisateur
+3. Extraction des acteurs (triplets film-acteur-rôle)
+4. Jointure films + acteurs avec informations complètes
+5. Films complets avec tous leurs acteurs (COGROUP)
+6. Acteurs/Réalisateurs : nombre de films joués ET réalisés par artiste
 
-\* Table \`products\` créée et correctement alimentée \* Lectures OK \*
-Vérification de la présence des lignes : success
+## 📸 Captures d'écran
 
-\### Avec Spark :
+Toutes les captures d'écran des résultats sont disponibles dans le dossier `screenshots/`.
 
-\* RDD créé depuis HBase \* Nombre total de lignes affiché \* Calculs
-distribués effectués :
-
-\* Total ventes = OK \* Ventes par produit = OK \* Ventes par ville = OK
-\* Statistiques globales = OK
-
-\-\--
-
-\## Conclusion
-
-Ce TP a permis de :
-
-\* Manipuler un dataset volumineux dans HDFS \* Gérer des données NoSQL
-avec HBase \* Intégrer Spark pour analyser des données distribuées \*
-Développer des programmes Java pour interagir avec HBase et Spark
-
-\-\--

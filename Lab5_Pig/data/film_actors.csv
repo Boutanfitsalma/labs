@@ -1,0 +1,43 @@
+film_id,film_title,actor_id,role
+movie:1,Vertigo,artist:2,John Ferguson
+movie:1,Vertigo,artist:3,Madeleine Elster
+movie:2,Psycho,artist:4,Norman Bates
+movie:2,Psycho,artist:5,Marion Crane
+movie:3,North by Northwest,artist:6,Roger Thornhill
+movie:3,North by Northwest,artist:7,Eve Kendall
+movie:4,Rear Window,artist:2,L.B. Jefferies
+movie:4,Rear Window,artist:8,Lisa Fremont
+movie:5,The Godfather,artist:10,Don Vito Corleone
+movie:5,The Godfather,artist:11,Michael Corleone
+movie:6,The Godfather Part II,artist:10,Vito Corleone
+movie:6,The Godfather Part II,artist:11,Michael Corleone
+movie:7,Apocalypse Now,artist:10,Colonel Kurtz
+movie:7,Apocalypse Now,artist:12,Captain Willard
+movie:8,Star Wars,artist:14,Luke Skywalker
+movie:8,Star Wars,artist:15,Han Solo
+movie:8,Star Wars,artist:16,Princess Leia
+movie:9,The Empire Strikes Back,artist:14,Luke Skywalker
+movie:9,The Empire Strikes Back,artist:15,Han Solo
+movie:9,The Empire Strikes Back,artist:16,Princess Leia
+movie:10,Blade Runner,artist:15,Deckard
+movie:10,Blade Runner,artist:19,Rachael
+movie:11,Casablanca,artist:21,Rick Blaine
+movie:11,Casablanca,artist:22,Ilsa Lund
+movie:12,Citizen Kane,artist:23,Charles Foster Kane
+movie:12,Citizen Kane,artist:24,Jedediah Leland
+movie:13,2001: A Space Odyssey,artist:26,Dr. Dave Bowman
+movie:13,2001: A Space Odyssey,artist:27,Dr. Frank Poole
+movie:14,The Shining,artist:28,Jack Torrance
+movie:14,The Shining,artist:29,Wendy Torrance
+movie:15,Pulp Fiction,artist:31,Vincent Vega
+movie:15,Pulp Fiction,artist:32,Jules Winnfield
+movie:16,La Haine,artist:34,Vinz
+movie:16,La Haine,artist:35,Hubert
+movie:17,Amélie,artist:37,Amélie Poulain
+movie:17,Amélie,artist:38,Nino Quincampoix
+movie:18,Le Fabuleux Destin d'Amélie Poulain,artist:37,Amélie
+movie:18,Le Fabuleux Destin d'Amélie Poulain,artist:38,Nino
+movie:19,Inception,artist:40,Dom Cobb
+movie:19,Inception,artist:41,Arthur
+movie:20,The Dark Knight,artist:42,Batman
+movie:20,The Dark Knight,artist:43,Joker

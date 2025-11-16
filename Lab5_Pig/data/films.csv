@@ -1,0 +1,21 @@
+film_id,title,year,genre,country,director_id
+movie:1,Vertigo,1958,drama,US,artist:1
+movie:2,Psycho,1960,thriller,US,artist:1
+movie:3,North by Northwest,1959,thriller,US,artist:1
+movie:4,Rear Window,1954,thriller,US,artist:1
+movie:5,The Godfather,1972,crime,US,artist:9
+movie:6,The Godfather Part II,1974,crime,US,artist:9
+movie:7,Apocalypse Now,1979,war,US,artist:9
+movie:8,Star Wars,1977,sci-fi,US,artist:13
+movie:9,The Empire Strikes Back,1980,sci-fi,US,artist:17
+movie:10,Blade Runner,1982,sci-fi,US,artist:18
+movie:11,Casablanca,1942,drama,US,artist:20
+movie:12,Citizen Kane,1941,drama,US,artist:23
+movie:13,2001: A Space Odyssey,1968,sci-fi,US,artist:25
+movie:14,The Shining,1980,horror,US,artist:25
+movie:15,Pulp Fiction,1994,crime,US,artist:30
+movie:16,La Haine,1995,drama,FR,artist:33
+movie:17,Amélie,2001,romance,FR,artist:36
+movie:18,Le Fabuleux Destin d'Amélie Poulain,2001,romance,FR,artist:36
+movie:19,Inception,2010,sci-fi,US,artist:39
+movie:20,The Dark Knight,2008,action,US,artist:39
